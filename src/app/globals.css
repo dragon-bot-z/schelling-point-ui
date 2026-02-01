@@ -1,0 +1,295 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Orbitron', monospace;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  
+  --color-void: #050508;
+  --color-deep: #0a0a12;
+  --color-panel: #12121f;
+  --color-border: #1f1f35;
+  --color-phosphor: #39FF14;
+  --color-phosphor-dim: #1a7a0a;
+  --color-amber: #FFB800;
+  --color-amber-dim: #7a5800;
+  --color-cyan: #00FFFF;
+  --color-cyan-dim: #007a7a;
+  --color-red: #FF3366;
+  --color-text: #c5c5d5;
+  --color-text-dim: #6a6a8a;
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/orbitron/v31/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1nyKS6BoWg1fDAlp7lk.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/jetbrainsmono/v18/tDbY2o-flEEny0FZhsfKu5WU4zr3E_BX0PnT8RD8yKxjPVmUsaaDhw.woff2') format('woff2');
+}
+
+html, body {
+  background: var(--color-void);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  min-height: 100vh;
+}
+
+/* CRT Scanline Effect */
+.crt-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+/* Phosphor Glow */
+.phosphor-glow {
+  text-shadow: 
+    0 0 5px var(--color-phosphor),
+    0 0 10px var(--color-phosphor),
+    0 0 20px var(--color-phosphor-dim);
+}
+
+.amber-glow {
+  text-shadow: 
+    0 0 5px var(--color-amber),
+    0 0 10px var(--color-amber),
+    0 0 20px var(--color-amber-dim);
+}
+
+.cyan-glow {
+  text-shadow: 
+    0 0 5px var(--color-cyan),
+    0 0 10px var(--color-cyan),
+    0 0 20px var(--color-cyan-dim);
+}
+
+/* Grid Background */
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(57, 255, 20, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57, 255, 20, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+}
+
+/* Animated Border */
+@keyframes border-pulse {
+  0%, 100% { border-color: var(--color-phosphor-dim); }
+  50% { border-color: var(--color-phosphor); }
+}
+
+.border-pulse {
+  animation: border-pulse 2s ease-in-out infinite;
+}
+
+/* Phase Indicator Animation */
+@keyframes phase-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.phase-active {
+  animation: phase-blink 1s ease-in-out infinite;
+}
+
+/* Terminal Cursor */
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink::after {
+  content: '█';
+  animation: cursor-blink 1s step-end infinite;
+  color: var(--color-phosphor);
+}
+
+/* Data Stream Background */
+@keyframes data-scroll {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+
+.data-stream {
+  position: absolute;
+  opacity: 0.03;
+  font-size: 10px;
+  line-height: 1.2;
+  white-space: pre;
+  animation: data-scroll 30s linear infinite;
+}
+
+/* Panel Styles */
+.panel {
+  background: linear-gradient(
+    135deg,
+    var(--color-panel) 0%,
+    var(--color-deep) 100%
+  );
+  border: 1px solid var(--color-border);
+  box-shadow: 
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Input Styles */
+input, select {
+  background: var(--color-deep);
+  border: 1px solid var(--color-border);
+  color: var(--color-phosphor);
+  font-family: var(--font-mono);
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--color-phosphor);
+  box-shadow: 0 0 10px var(--color-phosphor-dim);
+}
+
+input::placeholder {
+  color: var(--color-text-dim);
+}
+
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(
+    180deg,
+    var(--color-phosphor) 0%,
+    var(--color-phosphor-dim) 100%
+  );
+  color: var(--color-void);
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 20px var(--color-phosphor-dim);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px var(--color-phosphor);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--color-phosphor);
+  color: var(--color-phosphor);
+  font-family: var(--font-mono);
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--color-phosphor);
+  color: var(--color-void);
+}
+
+/* Stat Display */
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--color-phosphor);
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-text-dim);
+}
+
+/* Phase Badge */
+.phase-badge {
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+}
+
+.phase-commit {
+  background: var(--color-phosphor-dim);
+  color: var(--color-phosphor);
+  border: 1px solid var(--color-phosphor);
+}
+
+.phase-reveal {
+  background: var(--color-amber-dim);
+  color: var(--color-amber);
+  border: 1px solid var(--color-amber);
+}
+
+.phase-complete {
+  background: var(--color-cyan-dim);
+  color: var(--color-cyan);
+  border: 1px solid var(--color-cyan);
+}
+
+.phase-inactive {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text-dim);
+  border: 1px solid var(--color-border);
+}
+
+/* Countdown */
+.countdown {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Toast / Alert */
+.toast {
+  background: var(--color-panel);
+  border: 1px solid var(--color-phosphor);
+  box-shadow: 0 0 20px var(--color-phosphor-dim);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-phosphor);
+  color: var(--color-void);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-phosphor-dim);
+}
